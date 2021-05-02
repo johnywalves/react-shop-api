@@ -1,0 +1,95 @@
+{
+  "kind": "collectionType",
+  "collectionName": "games",
+  "info": {
+    "name": "game",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name"
+    },
+    "short_description": {
+      "type": "text",
+      "required": true,
+      "maxLength": 160
+    },
+    "description": {
+      "type": "richtext",
+      "required": true
+    },
+    "price": {
+      "type": "decimal",
+      "required": true,
+      "default": 0
+    },
+    "release_date": {
+      "type": "date",
+      "required": false
+    },
+    "rating": {
+      "type": "enumeration",
+      "enum": [
+        "FREE",
+        "peg3",
+        "peg7",
+        "peg12",
+        "peg16",
+        "peg18"
+      ],
+      "required": true,
+      "default": "FREE"
+    },
+    "cover": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images"
+      ],
+      "plugin": "upload",
+      "required": false,
+      "pluginOptions": {}
+    },
+    "gallery": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images"
+      ],
+      "plugin": "upload",
+      "required": false,
+      "pluginOptions": {}
+    },
+    "categories": {
+      "collection": "category",
+      "via": "games",
+      "dominant": true
+    },
+    "developers": {
+      "collection": "developer",
+      "via": "games",
+      "dominant": true
+    },
+    "platforms": {
+      "collection": "platform",
+      "via": "games",
+      "dominant": true
+    },
+    "publisher": {
+      "model": "publisher",
+      "via": "games"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "platforms",
+  "info": {
+    "name": "platform"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "siug": {
+      "type": "uid",
+      "targetField": "name"
+    },
+    "games": {
+      "via": "platforms",
+      "collection": "game"
+    }
+  }
+}
