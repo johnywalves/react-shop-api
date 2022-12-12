@@ -5,4 +5,9 @@
  * to customize this service
  */
 
-module.exports = {};
+module.exports = {
+    populate: async (ctx) => {
+        const cat = await strapi.services.category.find({ name: "Action" })
+        console.log(cat)
+    }
+};
