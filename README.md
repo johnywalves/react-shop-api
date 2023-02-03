@@ -34,6 +34,16 @@ yarn build
 
 ## ⚙️ Deployment
 
+To build and up the server and administrator use the command
+
 ```base 
 docker-compose up -d
 ```
+
+In the connection inform
+
+* **Hostname/address**: postgres-compose;
+* **Username**: postgres.
+
+After connection create `react-shop` database and run `develop`
+
