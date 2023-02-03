@@ -1,3 +1,4 @@
 .cache
 build
+data
 **/node_modules/**

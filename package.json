@@ -7,9 +7,9 @@
     "develop": "strapi develop",
     "start": "strapi start",
     "build": "strapi build",
-    "strapi": "strapi"
+    "strapi": "strapi",
+    "prettier": "prettier --w \"src/**/*.js\""
   },
-  "devDependencies": {},
   "dependencies": {
     "@strapi/plugin-graphql": "^4.6.0",
     "@strapi/plugin-i18n": "4.6.0",
@@ -17,6 +17,9 @@
     "@strapi/strapi": "4.6.0",
     "graphql-request": "^5.1.0",
     "pg": "^8.9.0"
+  },
+  "devDependencies": {
+    "prettier": "^2.8.3"
   },
   "author": {
     "name": "A Strapi developer"

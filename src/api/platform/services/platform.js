@@ -1,9 +1,9 @@
-'use strict';
+'use strict'
 
 /**
  * platform service
  */
 
-const { createCoreService } = require('@strapi/strapi').factories;
+const { createCoreService } = require('@strapi/strapi').factories
 
-module.exports = createCoreService('api::platform.platform');
+module.exports = createCoreService('api::platform.platform')

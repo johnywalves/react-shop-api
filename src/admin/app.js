@@ -1,22 +1,20 @@
-import MenuLogo from './extensions/logo.png';
-import favicon from './extensions/favicon.png';
+import MenuLogo from './extensions/logo.png'
+import favicon from './extensions/favicon.png'
 
 export default {
   config: {
     // Replace the Strapi logo in auth (login) views
     auth: {
-      logo: MenuLogo,
+      logo: MenuLogo
     },
     // Replace the favicon
     head: {
-      favicon: favicon,
+      favicon: favicon
     },
-    // Add a new locale, other than 'en'
-    locales: [
-      'pt-BR',
-    ],
+          // Add a new locale, other than 'en'
+    locales: ['pt-BR'],
     menu: {
-      logo: MenuLogo,
+      logo: MenuLogo
     },
     // Override or extend the theme
     theme: {
@@ -26,10 +24,12 @@ export default {
         primary600: '#cc0071',
         primary700: '#b6006a',
         danger700: '#de1226'
-      },
+      }
     },
+    // Toggles displaying the video tutorials
+    tutorials: false
   },
   bootstrap(app) {
-    console.log(app);
-  },
-};
+    console.log(app)
+  }
+}
