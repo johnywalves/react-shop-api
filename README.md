@@ -1,4 +1,4 @@
-# Carreira Policial API
+# React Shop API
 
 Strapi comes with a full featured [Command Line Interface](https://docs.strapi.io/developer-docs/latest/developer-resources/cli/CLI.html) (CLI) which lets you scaffold and manage your project in seconds.
 
@@ -32,13 +32,18 @@ npm run build
 yarn build
 ```
 
-## ⚙️ Deployment
+## ⚙️ Deployment database server 
 
 To build and up the server and administrator use the command
 
 ```base 
-docker-compose up -d
+docker compose up -d
 ```
+
+To access in [localhost:16543](http://localhost:16543/) with login info and create database "react-shop"
+
+* teste@teste.com
+* db321
 
 In the connection inform
 
