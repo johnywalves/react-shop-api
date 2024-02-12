@@ -4,5 +4,6 @@
   // enable per-language (here: Prettier as formatter)
   "[javascript]": {
     "editor.defaultFormatter": "vscode.typescript-language-features"
-  }
+  },
+  "cSpell.words": ["strapi"]
 }

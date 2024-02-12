@@ -11,15 +11,16 @@
     "prettier": "prettier --w \"src/**/*.js\""
   },
   "dependencies": {
-    "@strapi/plugin-graphql": "^4.6.0",
+    "@strapi/plugin-graphql": "4.6.0",
     "@strapi/plugin-i18n": "4.6.0",
     "@strapi/plugin-users-permissions": "4.6.0",
     "@strapi/strapi": "4.6.0",
-    "graphql-request": "^5.1.0",
-    "pg": "^8.9.0"
+    "graphql-request": "5.1.0",
+    "jsdom": "22.0.0",
+    "pg": "8.9.0"
   },
   "devDependencies": {
-    "prettier": "^2.8.3"
+    "prettier": "2.8.3"
   },
   "author": {
     "name": "A Strapi developer"

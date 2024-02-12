@@ -56,6 +56,6 @@ In the connection inform
 
 After connection create `react-shop` database and run `develop`
 
-## Additionals Endpoints
+## Additions Endpoints
 
 ### `GET /api/game/populate`

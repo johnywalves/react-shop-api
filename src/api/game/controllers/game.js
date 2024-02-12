@@ -10,7 +10,7 @@ module.exports = createCoreController('api::game.game', ({ strapi }) => ({
   populate: async (ctx) => {
     try {
       await strapi.services['api::game.game'].populate()
-      ctx.body = 'ok'
+      ctx.body = 'ok\n'
     } catch (err) {
       ctx.body = err
     }

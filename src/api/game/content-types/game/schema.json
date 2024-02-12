@@ -45,12 +45,12 @@
     "rating": {
       "type": "enumeration",
       "enum": [
-        "FREE",
-        "peg3",
-        "peg7",
-        "peg12",
-        "peg16",
-        "peg18"
+        "BR0",
+        "BR10",
+        "BR12",
+        "BR14",
+        "BR16",
+        "BR18"
       ],
       "required": true,
       "default": "FREE"
