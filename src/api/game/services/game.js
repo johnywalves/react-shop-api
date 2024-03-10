@@ -34,7 +34,7 @@ module.exports = createCoreService('api::game.game', ({ strapi }) => ({
     console.log(products[0])
     console.log(await getGameInfo(products[0].slug))
 
-    await strapi.services['api::publisher.publisher'].create({ name: products[0][0], slug })
+    //await strapi.services['api::publisher.publisher'].create({ name: products[0][0], slug })
 
     if (response.okay === false) {
       return { response, error: true }

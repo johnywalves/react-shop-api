@@ -12,8 +12,6 @@ Start your Strapi application with autoReload enabled. [Learn more](https://docs
 
 ```bash
 npm run develop
-# or
-yarn develop
 ```
 
 ### `start`
@@ -22,8 +20,6 @@ Start your Strapi application with autoReload disabled. [Learn more](https://doc
 
 ```bash
 npm run start
-# or
-yarn start
 ```
 
 ### `build`
@@ -32,8 +28,6 @@ Build your admin panel. [Learn more](https://docs.strapi.io/developer-docs/lates
 
 ```bash
 npm run build
-# or
-yarn build
 ```
 
 ## ⚙️ Deployment database server

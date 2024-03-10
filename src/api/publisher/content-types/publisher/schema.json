@@ -8,8 +8,6 @@
     "description": ""
   },
   "options": {
-    "increments": true,
-    "timestamps": true,
     "draftAndPublish": true
   },
   "pluginOptions": {},
@@ -22,7 +20,6 @@
     },
     "slug": {
       "type": "uid",
-      "targetField": "name",
       "required": true
     },
     "games": {

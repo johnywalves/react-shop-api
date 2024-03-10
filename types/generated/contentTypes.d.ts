@@ -866,8 +866,6 @@ export interface ApiGameGame extends Schema.CollectionType {
     description: ''
   }
   options: {
-    increments: true
-    timestamps: true
     draftAndPublish: true
   }
   attributes: {
@@ -878,14 +876,19 @@ export interface ApiGameGame extends Schema.CollectionType {
       Attribute.SetMinMaxLength<{
         maxLength: 160
       }>
-    description: Attribute.RichText & Attribute.Required
+    description: Attribute.RichText &
+      Attribute.CustomField<
+        'plugin::ckeditor.CKEditor',
+        {
+          output: 'HTML'
+          preset: 'rich'
+        }
+      >
     price: Attribute.Decimal & Attribute.Required & Attribute.DefaultTo<0>
     release_date: Attribute.Date
     rating: Attribute.Enumeration<
       ['BR0', 'BR10', 'BR12', 'BR14', 'BR16', 'BR18']
-    > &
-      Attribute.Required &
-      Attribute.DefaultTo<'FREE'>
+    >
     cover: Attribute.Media
     gallery: Attribute.Media
     categories: Attribute.Relation<
@@ -966,8 +969,6 @@ export interface ApiPublisherPublisher extends Schema.CollectionType {
     description: ''
   }
   options: {
-    increments: true
-    timestamps: true
     draftAndPublish: true
   }
   attributes: {
@@ -975,7 +976,7 @@ export interface ApiPublisherPublisher extends Schema.CollectionType {
       Attribute.Required &
       Attribute.Unique &
       Attribute.DefaultTo<'name'>
-    slug: Attribute.UID<'api::publisher.publisher', 'name'> & Attribute.Required
+    slug: Attribute.UID & Attribute.Required
     games: Attribute.Relation<
       'api::publisher.publisher',
       'oneToMany',
