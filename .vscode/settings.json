@@ -5,5 +5,5 @@
   "[javascript]": {
     "editor.defaultFormatter": "vscode.typescript-language-features"
   },
-  "cSpell.words": ["strapi"]
+  "cSpell.words": ["ckeditor", "strapi", "xlink"]
 }
