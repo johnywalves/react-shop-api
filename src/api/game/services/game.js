@@ -5,47 +5,69 @@
  */
 const axios = require("axios")
 const slugify = require("slugify")
+const qs = require("querystring")
+
+function timeout(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function Exception(e) {
+  return { e, data: e.data && e.data.errors && e.data.errors };
+}
+
 
 async function getGameInfo(slug) {
-  const jsdom = require("jsdom")
-  const { JSDOM } = jsdom
+  try {
+    const jsdom = require("jsdom")
+    const { JSDOM } = jsdom
 
-  const goPath = slug.replace(/-/g, "_")
-  const body = await axios.get(`https://www.gog.com/game/${goPath}`)
-  const dom = new JSDOM(body.data)
+    const goPath = slug.replace(/-/g, "_")
+    const body = await axios.get(`https://www.gog.com/game/${goPath}`)
+    const dom = new JSDOM(body.data)
 
-  const raw_description = dom.window.document.querySelector(".description")
-  const short_description = raw_description.textContent.slice(0, 160)
-  const description = raw_description.innerHTML
+    const raw_description = dom.window.document.querySelector(".description")
+    const short_description = raw_description.textContent.slice(0, 160)
+    const description = raw_description.innerHTML
 
-  const rating_element = dom.window.document.querySelector('.age-restrictions__icon use')
-  const rating = rating_element ? rating_element.getAttribute('xlink:href')
-    .replace(/_/g, "")
-    .replace('#', '')
-    : 'BR0'
+    const rating_element = dom.window.document.querySelector('.age-restrictions__icon use')
+    const rating = rating_element ? rating_element.getAttribute('xlink:href')
+      .replace(/_/g, "")
+      .replace('#', '')
+      : 'BR0'
 
-  return {
-    short_description,
-    description,
-    rating,
+    return {
+      short_description,
+      description,
+      rating,
+    }
+  } catch (error) {
+    console.log("getGameInfo:", Exception(error));
   }
 }
 
 async function getByName(name, entityService) {
-  const item = await strapi.service(entityService).find({ filters: { name } })
-  return item.results.length > 0 ? item.results[0] : null
+  try {
+    const item = await strapi.service(entityService).find({ filters: { name } })
+    return item.results.length > 0 ? item.results[0] : null
+  } catch (error) {
+    console.log("getByName:", Exception(error));
+  }
 }
 
 async function create(name, entityService) {
-  const item = await getByName(name, entityService)
+  try {
+    const item = await getByName(name, entityService)
 
-  if (!item) {
-    await strapi.service(entityService).create({
-      data: {
-        name: name,
-        slug: slugify(name, { strict: true, lower: true })
-      }
-    })
+    if (!item) {
+      await strapi.service(entityService).create({
+        data: {
+          name: name,
+          slug: slugify(name, { strict: true, lower: true })
+        }
+      })
+    }
+  } catch (error) {
+    console.log("create:", Exception(error));
   }
 }
 
@@ -84,6 +106,34 @@ async function createManyToManyData(products) {
   ])
 }
 
+async function setImage({ image, game, field = "cover" }) {
+  try {
+    const { data } = await axios.get(image, { responseType: "arraybuffer" })
+    const buffer = Buffer.from(data, "base64")
+
+    const FormData = require("form-data")
+    const formData = new FormData()
+
+    formData.append("refId", game.id)
+    formData.append("ref", "api::game.game")
+    formData.append("field", field)
+    formData.append("files", buffer, { filename: `${game.slug}.jpg` })
+
+    console.info(`Uploading ${field} image: ${game.slug}.jpg`)
+
+    await axios({
+      method: "POST",
+      url: `http://localhost:1337/api/upload/`,
+      data: formData,
+      headers: {
+        "Content-Type": `multipart/form-data; boundary=${formData._boundary}`,
+      },
+    })
+  } catch (error) {
+    console.log("setImage:", Exception(error));
+  }
+}
+
 async function createGames(products) {
   await Promise.all(
     products.map(async ({
@@ -94,14 +144,16 @@ async function createGames(products) {
       developers,
       publishers,
       genres,
-      operatingSystems
+      operatingSystems,
+      coverHorizontal,
+      screenshots
     }) => {
       const item = await getByName(title, "api::game.game")
 
       if (!item) {
         console.info(`Creating... ${title}`)
 
-        return await strapi.service("api::game.game").create({
+        const game = await strapi.service("api::game.game").create({
           data: {
             name: title,
             slug,
@@ -115,6 +167,20 @@ async function createGames(products) {
             publishedAt: new Date()
           }
         })
+
+        await setImage({ image: coverHorizontal, game });
+
+        await Promise.all(
+          screenshots.slice(0, 5).map((url) =>
+            setImage({
+              image: `${url.replace("{formatter}", "product_card_v2_mobile_slider_639")}`,
+              game,
+              field: "gallery",
+            })
+          )
+        )
+
+        return game
       }
     })
   )
@@ -123,16 +189,21 @@ async function createGames(products) {
 const { createCoreService } = require('@strapi/strapi').factories
 
 module.exports = createCoreService('api::game.game', ({ strapi }) => ({
-  async populate(...args) {
-    const response = { okay: true }
+  async populate(params) {
+    try {
+      const response = { okay: true }
 
-    const gogApiUrl = 'https://catalog.gog.com/v1/catalog?limit=48&order=desc%3Atrending&productType=in%3Agame%2Cpack%2Cdlc%2Cextras&page=1&countryCode=BR&locale=en-US&currencyCode=BRL'
+      const gogApiUrl = `https://catalog.gog.com/v1/catalog?${qs.stringify(params)}`
 
-    const { data: { products } } = await axios.get(gogApiUrl)
+      const { data: { products } } = await axios.get(gogApiUrl)
 
-    await createManyToManyData(products)
-    await createGames(products)
+      await createManyToManyData(products)
+      await createGames(products)
 
-    return response
+      return response
+    }
+    catch (error) {
+      console.log("populate:", Exception(error));
+    }
   }
 }))
